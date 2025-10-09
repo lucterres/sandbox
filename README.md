@@ -1,21 +1,37 @@
 # C++ Sandbox - Projeto de Estudos
 
+![C++ CI Build](https://github.com/terres_petro/sandbox/workflows/C++%20CI%20Build/badge.svg)
+![Quick Build](https://github.com/terres_petro/sandbox/workflows/Quick%20Build/badge.svg)
+![C++17](https://img.shields.io/badge/C++-17-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+
 ## 📋 Sobre o Projeto
 
-Projeto sandbox para aprendizado e desenvolvimento em C++ com configuração completa para VS Code.
+Projeto sandbox para aprendizado e desenvolvimento em C++ com configuração completa para VS Code e **CI/CD automatizado** via GitHub Actions.
 
 ## 🚀 Características
 
 - ✅ Configuração completa do VS Code para C++
 - ✅ Integração com g++ (MinGW-w64 via Strawberry Perl)
+- ✅ **GitHub Actions** - Build automatizado em Windows, Linux e macOS
 - ✅ Múltiplas configurações de build (rápida, debug, ultra-rápida)
 - ✅ Debug integrado com GDB
 - ✅ Suporte a C++17
 - ✅ Tasks otimizadas para diferentes cenários
 
-## 🛠️ Configurações de Build
+## 🤖 CI/CD com GitHub Actions
 
-### Build Tasks Disponíveis
+O projeto possui workflows automatizados que compilam e testam o código em múltiplas plataformas:
+
+- **🪟 Windows** (MinGW-w64)
+- **� Linux** (g++ e clang++)
+- **🍎 macOS** (Apple Clang)
+
+Cada commit dispara builds automáticos com configurações Debug e Release. [Veja mais detalhes](.github/GITHUB_ACTIONS.md).
+
+## �🛠️ Configurações de Build
+
+### Build Tasks Disponíveis (VS Code)
 
 | Task | Otimização | Debug | Velocidade | Uso |
 |------|------------|-------|------------|-----|
@@ -42,10 +58,24 @@ Projeto sandbox para aprendizado e desenvolvimento em C++ com configuração com
 2. Selecione a configuração no dropdown
 3. Pressione **F5**
 
-## 📁 Estrutura do Projeto
+## � Artefatos do Build Automatizado
+
+Após cada build bem-sucedido, você pode baixar os executáveis:
+
+1. Vá para **Actions** no GitHub
+2. Clique no workflow executado
+3. Role até **Artifacts**
+4. Download dos executáveis para Windows, Linux ou macOS
+
+## �📁 Estrutura do Projeto
 
 ```
 sandbox/
+├── .github/
+│   ├── workflows/
+│   │   ├── build.yml          # CI/CD principal
+│   │   └── quick-build.yml    # Build rápido
+│   └── GITHUB_ACTIONS.md      # Documentação CI/CD
 ├── .vscode/
 │   ├── c_cpp_properties.json  # Configuração IntelliSense
 │   ├── launch.json            # Configurações de debug

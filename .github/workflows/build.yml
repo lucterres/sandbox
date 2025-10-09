@@ -1,0 +1,198 @@
+name: C++ CI Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        build_type: [Debug, Release]
+        
+    steps:
+    - name: 🔍 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Setup MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-gdb
+          make
+          
+    - name: 📋 Informações do Compilador
+      shell: msys2 {0}
+      run: |
+        g++ --version
+        echo "Build Type: ${{ matrix.build_type }}"
+        
+    - name: 🚀 Build Fast (Release)
+      if: matrix.build_type == 'Release'
+      shell: msys2 {0}
+      run: |
+        g++ -std=c++17 -O2 -DNDEBUG -Wall -Wextra main.cpp -o main_release.exe
+        
+    - name: 🐛 Build Debug
+      if: matrix.build_type == 'Debug'
+      shell: msys2 {0}
+      run: |
+        g++ -std=c++17 -g -O0 -Wall -Wextra main.cpp -o main_debug.exe
+        
+    - name: ✅ Teste Execução (Release)
+      if: matrix.build_type == 'Release'
+      shell: msys2 {0}
+      run: |
+        ./main_release.exe
+        
+    - name: ✅ Teste Execução (Debug)
+      if: matrix.build_type == 'Debug'
+      shell: msys2 {0}
+      run: |
+        ./main_debug.exe
+        
+    - name: 📦 Upload Artifact (Release)
+      if: matrix.build_type == 'Release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-release-build
+        path: main_release.exe
+        retention-days: 30
+        
+    - name: 📦 Upload Artifact (Debug)
+      if: matrix.build_type == 'Debug'
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-debug-build
+        path: main_debug.exe
+        retention-days: 30
+
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        build_type: [Debug, Release]
+        compiler: [g++, clang++]
+        
+    steps:
+    - name: 🔍 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gdb clang
+        
+    - name: 📋 Informações do Compilador
+      run: |
+        ${{ matrix.compiler }} --version
+        echo "Build Type: ${{ matrix.build_type }}"
+        echo "Compiler: ${{ matrix.compiler }}"
+        
+    - name: 🚀 Build Fast (Release)
+      if: matrix.build_type == 'Release'
+      run: |
+        ${{ matrix.compiler }} -std=c++17 -O2 -DNDEBUG -Wall -Wextra main.cpp -o main_release
+        
+    - name: 🐛 Build Debug
+      if: matrix.build_type == 'Debug'
+      run: |
+        ${{ matrix.compiler }} -std=c++17 -g -O0 -Wall -Wextra main.cpp -o main_debug
+        
+    - name: ✅ Teste Execução (Release)
+      if: matrix.build_type == 'Release'
+      run: |
+        ./main_release
+        
+    - name: ✅ Teste Execução (Debug)
+      if: matrix.build_type == 'Debug'
+      run: |
+        ./main_debug
+        
+    - name: 📦 Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-${{ matrix.compiler }}-${{ matrix.build_type }}-build
+        path: main_*
+        retention-days: 30
+
+  build-macos:
+    name: Build on macOS
+    runs-on: macos-latest
+    
+    strategy:
+      matrix:
+        build_type: [Debug, Release]
+        
+    steps:
+    - name: 🔍 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 📋 Informações do Compilador
+      run: |
+        g++ --version
+        echo "Build Type: ${{ matrix.build_type }}"
+        
+    - name: 🚀 Build Fast (Release)
+      if: matrix.build_type == 'Release'
+      run: |
+        g++ -std=c++17 -O2 -DNDEBUG -Wall -Wextra main.cpp -o main_release
+        
+    - name: 🐛 Build Debug
+      if: matrix.build_type == 'Debug'
+      run: |
+        g++ -std=c++17 -g -O0 -Wall -Wextra main.cpp -o main_debug
+        
+    - name: ✅ Teste Execução (Release)
+      if: matrix.build_type == 'Release'
+      run: |
+        ./main_release
+        
+    - name: ✅ Teste Execução (Debug)
+      if: matrix.build_type == 'Debug'
+      run: |
+        ./main_debug
+        
+    - name: 📦 Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-${{ matrix.build_type }}-build
+        path: main_*
+        retention-days: 30
+
+  code-quality:
+    name: Análise de Código
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔍 Checkout código
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Install Clang Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-tidy cppcheck
+        
+    - name: 🔍 Run cppcheck
+      run: |
+        cppcheck --enable=all --suppress=missingIncludeSystem --error-exitcode=0 main.cpp
+        
+    - name: 📊 Estatísticas do Código
+      run: |
+        echo "=== Estatísticas do Código ==="
+        echo "Linhas de código:"
+        wc -l main.cpp
+        echo ""
+        echo "Tamanho do arquivo:"
+        ls -lh main.cpp
