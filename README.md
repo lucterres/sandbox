@@ -1,8 +1,26 @@
-# C++ Sandbox - Projeto de Estudos
+# C++ Sandbox - Proje## 🤖 CI/CD com GitHub Actions
 
-![C++ CI Build](https://github.com/terres_petro/sandbox/workflows/C++%20CI%20Build/badge.svg)
-![Quick Build](https://github.com/terres_petro/sandbox/workflows/Quick%20Build/badge.svg)
+O projeto poss## 📦 Artefatos do Build Automatizado
+
+Após cada build bem-sucedido no GitHub Actions, você pode baixar os executáveis Windows:
+
+1. Vá para **Actions** no GitHub
+2. Clique no workflow executado
+3. Role até **Artifacts**
+4. Download dos executáveis:
+   - `windows-release-build` - Versão otimizada
+   - `windows-debug-build` - Versão com símbolos de debuglow automatizado que compila e testa o código:
+
+- **🪟 Windows** (MinGW-w64)
+  - Build Debug (com símbolos de debug)
+  - Build Release (otimizado)
+- **🔍 Análise de Código** (cppcheck)
+
+Cada commit dispara builds automáticos com configurações Debug e Release. [Veja mais detalhes](.github/GITHUB_ACTIONS.md).udos
+
+![C++ CI Build](https://github.com/lucterres/sandbox/workflows/C++%20CI%20Build/badge.svg)
 ![C++17](https://img.shields.io/badge/C++-17-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Windows-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## 📋 Sobre o Projeto
@@ -13,7 +31,7 @@ Projeto sandbox para aprendizado e desenvolvimento em C++ com configuração com
 
 - ✅ Configuração completa do VS Code para C++
 - ✅ Integração com g++ (MinGW-w64 via Strawberry Perl)
-- ✅ **GitHub Actions** - Build automatizado em Windows, Linux e macOS
+- ✅ **GitHub Actions** - Build automatizado para Windows
 - ✅ Múltiplas configurações de build (rápida, debug, ultra-rápida)
 - ✅ Debug integrado com GDB
 - ✅ Suporte a C++17

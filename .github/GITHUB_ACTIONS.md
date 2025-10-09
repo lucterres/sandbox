@@ -3,17 +3,15 @@
 ## 📋 Workflows Disponíveis
 
 ### 1. 🏗️ C++ CI Build (build.yml)
-**Workflow principal** com builds em múltiplas plataformas e configurações.
+**Workflow principal** com builds para Windows.
 
 #### Triggers:
 - ✅ Push para `main` ou `develop`
 - ✅ Pull Requests para `main`
 - ✅ Execução manual (workflow_dispatch)
 
-#### Plataformas:
+#### Plataforma:
 - **Windows** (MinGW-w64)
-- **Linux** (g++ e clang++)
-- **macOS** (Apple Clang)
 
 #### Configurações:
 - **Debug** - Símbolos de debug, sem otimização (-g -O0)
@@ -22,30 +20,14 @@
 #### Artefatos Gerados:
 - `windows-release-build` - Executável Windows otimizado
 - `windows-debug-build` - Executável Windows para debug
-- `linux-g++-release-build` - Linux (g++) otimizado
-- `linux-g++-debug-build` - Linux (g++) debug
-- `linux-clang++-release-build` - Linux (clang++) otimizado
-- `linux-clang++-debug-build` - Linux (clang++) debug
-- `macos-release-build` - macOS otimizado
-- `macos-debug-build` - macOS debug
 
 **Retenção**: 30 dias
 
-### 2. ⚡ Quick Build (quick-build.yml)
-**Build rápido** para validação imediata de mudanças.
-
-#### Triggers:
-- ✅ Push para `main` (apenas arquivos .cpp, .h, .hpp)
-- ✅ Execução manual
+### 2. 🔍 Code Quality (dentro do build.yml)
+**Análise de qualidade** de código automatizada.
 
 #### Plataforma:
-- **Ubuntu** (mais rápido)
-
-#### Configuração:
-- **Release** ultra-otimizado (-O2 -DNDEBUG)
-
-### 3. 🔍 Code Quality (dentro do build.yml)
-**Análise de qualidade** de código automatizada.
+- **Ubuntu** (para ferramentas de análise)
 
 #### Ferramentas:
 - **cppcheck** - Análise estática
@@ -81,22 +63,7 @@ matrix:
 ```
 **Total**: 2 builds
 
-### Linux:
-```yaml
-matrix:
-  build_type: [Debug, Release]
-  compiler: [g++, clang++]
-```
-**Total**: 4 builds (2 compiladores × 2 configurações)
-
-### macOS:
-```yaml
-matrix:
-  build_type: [Debug, Release]
-```
-**Total**: 2 builds
-
-**TOTAL GERAL**: 8 builds paralelos + 1 análise de código = **9 jobs**
+**TOTAL GERAL**: 2 builds paralelos + 1 análise de código = **3 jobs**
 
 ## ⚙️ Flags de Compilação
 

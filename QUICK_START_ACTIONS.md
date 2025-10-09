@@ -37,20 +37,18 @@ Ou clique na aba **Actions** no topo do repositório.
 Cada vez que você fizer `git push`, os workflows serão executados automaticamente!
 
 ### O que acontece agora:
-1. ✅ Você fez `git push origin main`
-2. 🔄 GitHub detectou os novos workflows
-3. ⏳ **Agora mesmo** estão rodando os primeiros builds!
+1. ✅ Você faz `git push origin main`
+2. 🔄 GitHub detecta os novos commits
+3. ⏳ **Workflows automaticamente** rodam os builds!
 
-## 📊 Primeiro Build
+## 📊 Builds Executados
 
-Vá para Actions AGORA e você verá:
-- **C++ CI Build** - 8 jobs paralelos (Windows, Linux, macOS)
-- **Quick Build** - 1 job rápido
+Vá para Actions e você verá:
+- **C++ CI Build** - 2 jobs paralelos (Windows Debug + Release)
 - **Code Quality** - Análise de código
 
 ### Tempo Estimado:
-- Quick Build: ~1-2 minutos
-- Full CI Build: ~5-8 minutos
+- Full CI Build: ~3-5 minutos
 
 ## 🎨 Badges no README
 
@@ -85,20 +83,14 @@ Você receberá emails quando:
 Seus builds agora rodam em:
 
 ### Windows (2 builds):
-- ✅ Debug
-- ✅ Release
+- ✅ Debug - Com símbolos de debug
+- ✅ Release - Otimizado para performance
 
-### Linux (4 builds):
-- ✅ g++ Debug
-- ✅ g++ Release
-- ✅ clang++ Debug
-- ✅ clang++ Release
+### Análise de Código (1 job):
+- ✅ cppcheck - Análise estática
+- ✅ Estatísticas de código
 
-### macOS (2 builds):
-- ✅ Debug
-- ✅ Release
-
-**Total: 8 builds paralelos + análise de código!**
+**Total: 2 builds paralelos + 1 análise de código = 3 jobs**
 
 ## 🔧 Personalização Futura
 
