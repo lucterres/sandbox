@@ -22,12 +22,16 @@ Cada commit dispara builds automáticos com configurações Debug e Release. [Ve
 ![C++17](https://img.shields.io/badge/C++-17-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)
 
 ## 📋 Sobre o Projeto
 
-Projeto sandbox para aprendizado e desenvolvimento em C++ com configuração completa para VS Code e **CI/CD automatizado** via GitHub Actions.
+Projeto sandbox para aprendizado e desenvolvimento em C++ com configuração completa para VS Code, **testes unitários** e **CI/CD automatizado** via GitHub Actions.
 
 ## 🚀 Características
+
+- ✅ **Testes Unitários** - Framework de testes leve sem dependências externas
+- 🧪 **Biblioteca de Utilitários** - Funções testáveis para operações com ponteiros
 
 - ✅ Configuração completa do VS Code para C++
 - ✅ Integração com g++ (MinGW-w64 via Strawberry Perl)
@@ -76,7 +80,43 @@ Cada commit dispara builds automáticos com configurações Debug e Release. [Ve
 2. Selecione a configuração no dropdown
 3. Pressione **F5**
 
-## � Artefatos do Build Automatizado
+## 🧪 Testes Unitários
+
+O projeto inclui um **framework de testes leve** desenvolvido especificamente para este projeto, sem dependências externas.
+
+### Executar Testes
+
+#### Via VS Code Tasks:
+- **Ctrl + Shift + P** → `Tasks: Run Task` → `Build and Run Tests`
+
+#### Via Terminal:
+```bash
+# Compilar e executar testes
+g++ -std=c++17 -g -O0 test_main.cpp -o test_runner.exe
+./test_runner.exe
+
+# Ou usar o PowerShell script integrado
+powershell -Command "g++ -std=c++17 -g -O0 test_main.cpp -o test_runner.exe; if ($LASTEXITCODE -eq 0) { ./test_runner.exe }"
+```
+
+### Funcionalidades Testadas
+
+- ✅ **Dereferenciamento Seguro** - Verificação de ponteiros nulos
+- ✅ **Validação de Ponteiros** - Detecção de ponteiros válidos/inválidos  
+- ✅ **Ponteiros para Ponteiros** - Duplo dereferenciamento seguro
+- ✅ **Operações com Endereços** - Obtenção e comparação de endereços
+- ✅ **Aritmética de Ponteiros** - Cálculo de offsets e endereços adjacentes
+- ✅ **Tipos Diversos** - Suporte para int, double, char e outros tipos
+
+### Arquivos de Teste
+
+- `test_framework.h` - Framework de testes (assertions, macros, relatórios)
+- `test_main.cpp` - Casos de teste para todas as funcionalidades
+- `pointer_utils.h` - Biblioteca de utilitários para operações com ponteiros
+
+Os testes são executados automaticamente no **GitHub Actions** em todas as plataformas.
+
+## 📦 Artefatos do Build Automatizado
 
 Após cada build bem-sucedido, você pode baixar os executáveis:
 
@@ -91,16 +131,18 @@ Após cada build bem-sucedido, você pode baixar os executáveis:
 sandbox/
 ├── .github/
 │   ├── workflows/
-│   │   ├── build.yml          # CI/CD principal
-│   │   └── quick-build.yml    # Build rápido
+│   │   └── build.yml          # CI/CD com testes automáticos
 │   └── GITHUB_ACTIONS.md      # Documentação CI/CD
 ├── .vscode/
 │   ├── c_cpp_properties.json  # Configuração IntelliSense
 │   ├── launch.json            # Configurações de debug
 │   ├── settings.json          # Configurações do workspace
-│   └── tasks.json             # Tasks de build
+│   └── tasks.json             # Tasks de build e testes
 ├── build/                     # Arquivos compilados
 ├── main.cpp                   # Código fonte principal
+├── pointer_utils.h            # Biblioteca de utilitários
+├── test_framework.h           # Framework de testes unitários
+├── test_main.cpp             # Casos de teste
 ├── DEBUG_OPCOES.md           # Documentação de debug
 └── README.md                 # Este arquivo
 ```

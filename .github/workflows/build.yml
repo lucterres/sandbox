@@ -48,6 +48,16 @@ jobs:
       run: |
         g++ -std=c++17 -g -O0 -Wall -Wextra main.cpp -o main_debug.exe
         
+    - name: 🧪 Build Unit Tests
+      shell: msys2 {0}
+      run: |
+        g++ -std=c++17 -g -O0 -Wall -Wextra test_main.cpp -o test_runner.exe
+        
+    - name: 🧪 Run Unit Tests
+      shell: msys2 {0}
+      run: |
+        ./test_runner.exe
+        
     - name: ✅ Teste Execução (Release)
       if: matrix.build_type == 'Release'
       shell: msys2 {0}
@@ -87,11 +97,21 @@ jobs:
     - name: 🔧 Install Clang Tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y clang-tidy cppcheck
+        sudo apt-get install -y clang-tidy cppcheck g++
         
-    - name: 🔍 Run cppcheck
+    - name: 🧪 Build and Run Unit Tests (Linux)
+      run: |
+        echo "=== Compilando e Executando Testes Unitários ==="
+        g++ -std=c++17 -g -O0 -Wall -Wextra test_main.cpp -o test_runner
+        ./test_runner
+        
+    - name: 🔍 Run cppcheck on main
       run: |
         cppcheck --enable=all --suppress=missingIncludeSystem --error-exitcode=0 main.cpp
+        
+    - name: 🔍 Run cppcheck on tests
+      run: |
+        cppcheck --enable=all --suppress=missingIncludeSystem --error-exitcode=0 test_main.cpp pointer_utils.h test_framework.h
         
     - name: 📊 Estatísticas do Código
       run: |

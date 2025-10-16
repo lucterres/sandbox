@@ -106,6 +106,84 @@
             "problemMatcher": ["$gcc"],
             "group": "build",
             "detail": "Compilação automática otimizada"
+        },
+        {
+            "label": "Build Tests",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-g",
+                "-O0",
+                "test_main.cpp",
+                "-o",
+                "test_runner.exe"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Compilar os testes unitários",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Run Tests",
+            "type": "shell",
+            "command": ".\\test_runner.exe",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "detail": "Executar os testes unitários",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Build Tests"
+        },
+        {
+            "label": "Build and Run Tests",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Write-Host '🧪 Compilando testes...' -ForegroundColor Cyan; g++ -std=c++17 -g -O0 test_main.cpp -o test_runner.exe; if ($LASTEXITCODE -eq 0) { Write-Host '🚀 Executando testes...' -ForegroundColor Green; .\\test_runner.exe } else { Write-Host '❌ Falha na compilação!' -ForegroundColor Red }"
+            ],
+            "group": "test",
+            "problemMatcher": ["$gcc"],
+            "detail": "Compilar e executar todos os testes unitários",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Build Tests (Release)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-O2",
+                "-DNDEBUG",
+                "test_main.cpp",
+                "-o",
+                "test_runner_release.exe"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Compilar os testes em modo release (mais rápido)",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Run Tests (Release)",
+            "type": "shell",
+            "command": ".\\test_runner_release.exe",
+            "group": "test",
+            "detail": "Executar os testes em modo release",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Build Tests (Release)"
         }
     ]
 }
